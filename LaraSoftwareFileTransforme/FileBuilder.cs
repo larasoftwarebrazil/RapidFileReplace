@@ -40,7 +40,7 @@ namespace LaraSoftware.FileTransform
         /// <param name="replaceContent">Optional</param>
         /// <param name="copySubDirs">Optional</param>
         /// <returns></returns>
-        public void Transform(string sourceDirName, string searchText = "", string replaceText = "", bool replaceContent = false,
+        public void Transforme(string sourceDirName, string searchText = "", string replaceText = "", bool replaceContent = false,
              bool copySubDirs = false)
         {
             //Check directory
