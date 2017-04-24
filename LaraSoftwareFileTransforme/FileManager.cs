@@ -13,7 +13,7 @@ namespace LaraSoftware.FileTransform
     {
         public event CurrentFileProcessing _currentFileProcessingHandler;
 
-        public string teste { get { return ""; } }
+
         public FileManager(CurrentFileProcessing currentFileProcessingHandler)
         {
             _currentFileProcessingHandler = currentFileProcessingHandler;
@@ -76,13 +76,8 @@ namespace LaraSoftware.FileTransform
                 if (string.IsNullOrEmpty(destDirName) || String.IsNullOrEmpty(searchText))
                     temppath = Path.Combine(destDirName, file.Name);
                 else
-                {
-                     if (file.Name.Contains("-") && file.Name.Contains(".ts"))
-                        temppath = Path.Combine(destDirName, file.Name.Replace(SnakeCase(searchText), SnakeCase(replaceText)));
-                     else
-                        temppath = Path.Combine(destDirName, file.Name.Replace(searchText, replaceText));
+                    temppath = Path.Combine(destDirName, file.Name.Replace(searchText, replaceText));
 
-                }
                 file.CopyTo(temppath, false);
                 _currentFileProcessingHandler(temppath);
             }
@@ -132,10 +127,7 @@ namespace LaraSoftware.FileTransform
                 reader.Close();
             }
 
-            content = Regex.Replace(content, UpperCase(searchText), UpperCase(replaceText));
-            content = Regex.Replace(content, LowerCase(searchText), LowerCase(replaceText));
-            content = Regex.Replace(content, FirstCharToLower(searchText), FirstCharToLower(replaceText));
-            content = Regex.Replace(content, SnakeCase(searchText), SnakeCase(replaceText));
+            content = Regex.Replace(content, searchText, replaceText);
 
             using (StreamWriter writer = new StreamWriter(filePath))
             {
@@ -164,48 +156,5 @@ namespace LaraSoftware.FileTransform
                 return fileBytes;
             }
         }
-
-        public static string FirstCharToLower(string input)
-        {
-            if (String.IsNullOrEmpty(input))
-                throw new ArgumentException("is null!");
-            return input.First().ToString().ToLower() + String.Join("", input.Skip(1));
-        }
-
-        public static string FirstCharToUpper(string input)
-        {
-            if (String.IsNullOrEmpty(input))
-                throw new ArgumentException("is null!");
-            return input.First().ToString().ToUpper() + String.Join("", input.Skip(1));
-        }
-
-        public static string SnakeCase(string replaceText)
-        {
-            var regex = new Regex(@"[a-z]", RegexOptions.IgnoreCase);
-            var text = regex.Replace(replaceText, m => separateword(m.ToString()));
-
-            return text.First().ToString().Replace("-", "") + String.Join("", text.Skip(1));
-        }
-
-        private static string separateword(string x)
-        {
-            if (x.Any(char.IsUpper))
-                x = "-" + x.ToString().ToLower();
-
-            return x;   
-        }
-
-        public static string UpperCase(string replaceText)
-        {
-            var regex = new Regex(@"\b[A-Z]", RegexOptions.IgnoreCase);
-            return regex.Replace(replaceText, m => m.ToString().ToUpper());
-        }
-
-        public static string LowerCase(string replaceText)
-        {
-            var regex = new Regex(@"[a-z]", RegexOptions.IgnoreCase);
-            return regex.Replace(replaceText, m => m.ToString().ToLower());
-        }
-
     }
 }
