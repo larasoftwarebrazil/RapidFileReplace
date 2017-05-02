@@ -112,6 +112,15 @@ namespace LaraSoftware.FileTransform
 
             foreach (FileInfo file in files)
             {
+
+                if (file.FullName.Contains("png") ||
+                    file.FullName.Contains("jpg") ||
+                    file.FullName.Contains("gif") ||
+                    file.FullName.Contains("bmp") || file.FullName.Contains("ico"))
+                    continue;
+
+
+
                 ReplaceInFile(file.FullName, searchText, replaceText);
             }
 

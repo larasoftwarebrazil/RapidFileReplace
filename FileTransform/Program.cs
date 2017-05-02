@@ -19,8 +19,8 @@ namespace FileTransform
             _currentFileProcessingHandler += new CurrentFileProcessing(readConsole);
 
 
-            var build = new FileBuilder(@"C:\temp\", "EafManager", _currentFileProcessingHandler);
-            build.Transforme(@"C:\Projetos\ProjectTemplate", "ProjectName", "EafManager", true, true);
+            var build = new FileBuilder(@"C:\Projetos novos\", "EafManager", _currentFileProcessingHandler);
+            build.Transforme(@"C:\Projetos novos\EafManager\", "EafManager", "Manager", true, true);
             build.GetZipFile(Encoding.UTF8);
         }
 
